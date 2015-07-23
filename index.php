@@ -41,16 +41,16 @@
 
 
 
-<body style="background-color:#2196F3;">
+<body style="background-color:#BBDEFB;">
 <div class="page">
     <div class ="middle">
 <div class ="cityInput">
     <center><table>
         <tr>
-            <form>
+            <form method="post" action="display.php">
                 <td class="inputDesc" >City or Zip Code:  </td>
-                <td><input type="text" class="form-control inputBar"></td>
-                <td><button type="button" class="btn btn-primary">Go</button></td>
+                <td><input type="text" name="query" class="form-control inputBar"></td>
+                <td><button type="submit" class="btn btn-primary">Go</button></td>
             </form>
         </tr>
     </table>
