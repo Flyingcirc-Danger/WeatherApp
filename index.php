@@ -6,64 +6,62 @@
  * Time: 11:17 AM
  */
 
+include 'Header.php';
 
-?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
-
-    <title>Project Juicebox</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../dist/css/weather.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="grid.css" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
+//get geoip data
+$ip = $_SERVER['REMOTE_ADDR'];
+$details = json_decode(file_get_contents("http://ipinfo.io/{$ip}/json"));
 
 
-
-
-
-
-<body style="background-color:#BBDEFB;">
+echo '<body style="background-color:#BBDEFB;">
 <div class="page">
-    <div class ="middle">
-<div class ="cityInput">
-    <center><table>
-        <tr>
-            <form method="post" action="display.php">
-                <td class="inputDesc" >City or Zip Code:  </td>
-                <td><input type="text" name="query" class="form-control inputBar"></td>
-                <td><button type="submit" class="btn btn-primary">Go</button></td>
-            </form>
-        </tr>
-    </table>
-    </center>
-</div>
+    <div class="middle">
+        <div class="cityInput">
+            <center>
+                <table>
+                    <tr>
+                        <form method="post" action="display.php">
+                            <td><input type="text" name="query" class="form-control inputBar"
+                                       placeholder="Enter Zip or City"></td>
+                            <td><select class="form-control" name="degrees">
+                                    <option value="imperial">&deg;F</option>
+                                    <option value="metric">&deg;C</option>
+                                    <option value="kelvin">&deg;K</option>
+                                    </td><td>
+                                        <button type="submit" class="btn btn-primary">Go</button>
+                                    </td>
+                        </form>
+                    </tr>
+                </table>
+            </center>
+            <br>
+            <p> Or Find Weather in: </p>
+            <center>
+                <table>
+                    <tr>
+                        <form method="post" action="display.php">
+                            <td>
+                                <button type="submit" name="loc" class="btn btn-primary" value="' . $details->loc .'">' . $details->city . '</button>
+                            </td>
+                            <td><select class="form-control" name="degrees">
+                                    <option value="imperial">&deg;F</option>
+                                    <option value="metric">&deg;C</option>
+                                    <option value="kelvin">&deg;K</option>
+                            </td>
+                        </form>
+                    </tr>
+                </table>
+            </center>
+        </div>
     </div>
 </div>
 </body>
-</html>
+</html>';
 
 
 
 
 
 
+?>
 

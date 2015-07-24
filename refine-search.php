@@ -4,55 +4,51 @@
  * User: Tom_Bryant
  * Date: 7/23/15
  * Time: 2:06 PM
- * @param $searchTerm
  */
 
-
-function refineSearch($searchTerm)
+/**
+ * Given an array of cities, builds
+ * the form for refining a search
+ * @param $choice_array the array of cities
+ * @param $format the format to display search results in.
+ */
+function refineSearch($choice_array, $format)
 {
-    $citySearch = "grep " . $searchTerm . " city.list.json";
-    $choices = shell_exec($citySearch);
-    $choice_array = explode("\n", $choices);
-    echo '<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
-    <script src="../../js/choices.js"></script>
 
-    <title>Project Juicebox</title>
+    echo '
+<div class="page">
+<div class ="middle">
+<center><div class="choices"><p>Please Refine Your Search: </p><form method="post" action="city.php" ><center><table>';
 
-    <!-- Bootstrap core CSS -->
-    <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../dist/css/weather.css" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="grid.css" rel="stylesheet">
+        foreach ($choice_array as $choiceNo) {
+            if (strlen($choiceNo) > 2) {
+                $choiceJSON = json_decode($choiceNo);
+                echo "<tr><td><input type = 'radio' name='choice' value ='" . $choiceJSON->_id . "'/>  " . $choiceJSON->name . ", " . $choiceJSON->country . "</td></tr>";
+            }
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-</head>
-<body>
-<div id="choices"><p>Please Refine Your Search: </p><form><ol>';
-
-    foreach ($choice_array as $choiceNo) {
-        if (strlen($choiceNo) > 2) {
-            $choiceJSON = json_decode($choiceNo);
-            echo "<li><input type = 'radio' name='choice' value ='" . $choiceJSON->_id . "'/>  ". $choiceJSON->name . ", " . $choiceJSON->country . "</li>";
         }
-
-    }
-
-
-    echo '<button type="submit" class="btn btn-primary">Go</button></td></form></ol></div></body>
+        echo '<tr><td style="text-align:center"><input type="hidden" value=' . $format . ' name="degrees"/><button type="submit" class="btn btn-primary" style="text-align:center">Go</button></td></tr></table></center></form></div></center></div></div></body>
 </html>';
-    return;
+        return;
+
 
 }
+
+/**
+ * Calculates the distance in miles between a lat/lon pair.
+ * @param $geoLat the geoIP latitude
+ * @param $geoLon the geoIP longitude
+ * @param $searchLat the searchResult latitude
+ * @param $searchLon the searchResul longitude
+ * @return float the distance, in miles between a pair of lat/lon coords.
+ */
+function distance($geoLat, $geoLon, $searchLat, $searchLon) {
+
+    $theta = $geoLon - $searchLon;
+    $dist = sin(deg2rad($geoLat)) * sin(deg2rad($searchLat)) +  cos(deg2rad($geoLat)) * cos(deg2rad($searchLat)) * cos(deg2rad($theta));
+    $dist = acos($dist);
+    $dist = rad2deg($dist);
+    return $dist * 60 * 1.1515;
+}
+
