@@ -9,6 +9,8 @@ View the full app at [projectjuicebox](http://weather.projectjuicebox.com)
 * _city.php_ - displays the result of a refined city search (when multiple cities are reduced to one)
 * _APICall.php_ - holds the code for calling the API
 * _city.list.json_ - a list of 29,000 cities from [OpenWeatherMap](http://openweathermap.org)
+* _Header.php_ - Contains the basic HTML header with links to the js/css bootstrap components.
+* _API.php_ - **NOT INCLUDED IN REPO** This file contains a basic getter function that returns the API key.(Not included to keep the key private).
 
 ###Improvements
 * Merge city.php and display.php. The code is redundant (refine-search could redirect back to display.php)
